@@ -1,7 +1,9 @@
 ---
 title: mobx 和 mobx-react 入门
+tags: React
+top: true
+abbrlink: e13966ac
 date: 2021-11-25 16:18:15
-tags:
 ---
 
 ## 1.为什么需要状态管理？

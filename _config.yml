@@ -3,22 +3,22 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: leehom
-subtitle: ""
-description: "一名卑微的新时代农民工"
+title: leehome
+subtitle: "做一名有态度的程序员"
+description: ""
 keywords:
-author: leehom
-language: en
-timezone: ""
+author: leehome
+language: zh-CN
+timezone: Asia/Shanghai
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://leehome150.github.io
-permalink: :year/:month/:day/:title/
-permalink_defaults:
-pretty_urls:
-  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
-  trailing_html: true # Set to false to remove trailing '.html' from permalinks
+permalink: posts/:abbrlink/
+abbrlink:
+	alg: crc32   #算法： crc16(default) and crc32
+	rep: hex     #进制： dec(default) and hex
+
 
 # Directory
 source_dir: source
@@ -97,7 +97,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
@@ -105,3 +105,31 @@ deploy:
   type: git
   repo: git@github.com:leehome150/leehome150.github.io.git
   branch: gh-pages
+
+# Live2D
+live2d:
+  enable: true
+  scriptFrom: local
+  pluginRootPath: live2dw/
+  pluginJsPath: lib/
+  pluginModelPath: assets/
+  model:
+    # 这是白猫的模型
+    use: live2d-widget-model-hijiki
+  display:
+    # 设置模型的位置
+    position: right
+    width: 200
+    height: 300
+  mobile:
+    show: false
+  react:
+    opacityDefault: 1
+    opacityOnHover: 1
+
+# Search 
+search:
+path: search.xml
+field: post
+format: html
+limit: 10000
