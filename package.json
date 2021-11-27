@@ -12,6 +12,7 @@
     "version": "5.4.0"
   },
   "dependencies": {
+    "chalk": "^5.0.0",
     "hexo": "^5.0.0",
     "hexo-abbrlink": "^2.2.1",
     "hexo-cli": "^4.3.0",
