@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>如何理解Vue的.sync修饰符以及v-model</title>
+    <url>/posts/1c175475/</url>
+    <content><![CDATA[<h3 id="sync"><a href="#sync" class="headerlink" title=".sync"></a>.sync</h3><p>vue 修饰符 sync 的功能是：当一个子组件改变了一个 props 的值时，这个变化也会同步到父组件中所绑定。</p>
+<p>这个功能是怎么实现的呢？</p>
+<p>Vue 组件不能修改 props 外部数据，但是$emit可以触发事件，并传参，$event 可获取$emit 的参数。</p>
+<p>我们看代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Child.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;child&quot;&gt;</span><br><span class="line">   子组件：&#123;&#123;money&#125;&#125;</span><br><span class="line">//触发update:money事件，并传参</span><br><span class="line">   &lt;button @click=&quot;$emit(&#x27;update:money&#x27;,money-100)&quot;&gt;&lt;span&gt;花钱&lt;/span&gt;&lt;/button&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line"></span><br><span class="line">props:[&quot;money&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#child&#123;</span><br><span class="line">  border :1px solid red;</span><br><span class="line">  padding:2px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后$event 获取传的参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//App.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">   父组件： 我现在有&#123;&#123;total&#125;&#125;</span><br><span class="line">    &lt;hr&gt;</span><br><span class="line">//$event 获取传的参数赋值给total</span><br><span class="line">    &lt;Child :money=&quot;total&quot; v-on:update:money=&quot;total=$event&quot;/&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Child from&quot;./Child.vue&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">total:10000</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123; Child:Child&#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#app&#123;</span><br><span class="line">  border :2px solid blue;</span><br><span class="line">  padding:2px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>因为这种场景很常见，所以尤雨溪发明了.sync 修饰符，上面的代码<strong>:money=”total” v-on:update:money=”total=$event”可以简化为:money.sync=”total”</strong></p>
+<p>下面是运行动画：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/12/17207b0ebb162b47~tplv-t2oaga2asx-watermark.awebp"></p>
+<p><a href="https://codesandbox.io/s/eloquent-wave-bc7bb">代码点击</a></p>
+<h3 id="v-model"><a href="#v-model" class="headerlink" title="v-model"></a>v-model</h3><p>v-model 也是个语法糖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">v-model=&quot;x&quot;等价于 ：value=&quot;x&quot;,@input=&quot;x=$event.target.value&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当 v-model 用于普通 input 上</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &#123;&#123;message&#125;&#125;</span><br><span class="line">    &lt;hr/&gt;</span><br><span class="line">    &lt;input v-model=&quot;message&quot; placeholder=&quot;你好&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      message: &quot;&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>动画演示：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/3/17277f6ca1d24f4d~tplv-t2oaga2asx-watermark.awebp"></p>
+<p>当 v-model 用于组件上</p>
+<p>父组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &#123;&#123;price&#125;&#125;</span><br><span class="line">        &lt;hr/&gt;</span><br><span class="line">        &lt;test v-model=&quot;price&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    import test from &#x27;./components/Test.vue&#x27;;</span><br><span class="line">    export default &#123;</span><br><span class="line">        components:&#123;test&#125;,</span><br><span class="line">        name: &quot;App&quot;,</span><br><span class="line">        data()&#123;</span><br><span class="line">            return&#123;</span><br><span class="line">                price:100</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;子组件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>子组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;label&gt;</span><br><span class="line">      &lt;input ref=&quot;input&quot; :value=&quot;value&quot;</span><br><span class="line">      @input=&quot;$emit(&#x27;input&#x27;, $event.target.value)&quot;//子组件触发事件，把输入的参数传给price</span><br><span class="line">      &gt;</span><br><span class="line">    &lt;/label&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  props: [&quot;value&quot;],//子组件把value传给父组件，父组件绑定value=&quot;price&quot;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由上面代码我们可以看出子组件把 value 传给父组件，因为<strong> v-model=”price”等价于 ：value=”price”,@input=”price=$event.target.value”,</strong>父组件动态绑定了 value，然后 input 事件那输入的 value 参数传给了 price,所以我们就能看到以下效果：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/3/1727846768ecc1e0~tplv-t2oaga2asx-watermark.awebp"></p>
+]]></content>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mobx 和 mobx-react 入门</title>
     <url>/posts/e13966ac/</url>
     <content><![CDATA[<h2 id="1-为什么需要状态管理？"><a href="#1-为什么需要状态管理？" class="headerlink" title="1.为什么需要状态管理？"></a>1.为什么需要状态管理？</h2><h3 id="组件内"><a href="#组件内" class="headerlink" title="组件内"></a>组件内</h3><ul>
@@ -96,44 +134,6 @@
 ]]></content>
       <tags>
         <tag>React</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何理解Vue的.sync修饰符以及v-model</title>
-    <url>/posts/1c175475/</url>
-    <content><![CDATA[<h3 id="sync"><a href="#sync" class="headerlink" title=".sync"></a>.sync</h3><p>vue 修饰符 sync 的功能是：当一个子组件改变了一个 props 的值时，这个变化也会同步到父组件中所绑定。</p>
-<p>这个功能是怎么实现的呢？</p>
-<p>Vue 组件不能修改 props 外部数据，但是$emit可以触发事件，并传参，$event 可获取$emit 的参数。</p>
-<p>我们看代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Child.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;child&quot;&gt;</span><br><span class="line">   子组件：&#123;&#123;money&#125;&#125;</span><br><span class="line">//触发update:money事件，并传参</span><br><span class="line">   &lt;button @click=&quot;$emit(&#x27;update:money&#x27;,money-100)&quot;&gt;&lt;span&gt;花钱&lt;/span&gt;&lt;/button&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line"></span><br><span class="line">props:[&quot;money&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#child&#123;</span><br><span class="line">  border :1px solid red;</span><br><span class="line">  padding:2px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>然后$event 获取传的参数：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//App.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">   父组件： 我现在有&#123;&#123;total&#125;&#125;</span><br><span class="line">    &lt;hr&gt;</span><br><span class="line">//$event 获取传的参数赋值给total</span><br><span class="line">    &lt;Child :money=&quot;total&quot; v-on:update:money=&quot;total=$event&quot;/&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Child from&quot;./Child.vue&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">total:10000</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123; Child:Child&#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#app&#123;</span><br><span class="line">  border :2px solid blue;</span><br><span class="line">  padding:2px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>因为这种场景很常见，所以尤雨溪发明了.sync 修饰符，上面的代码<strong>:money=”total” v-on:update:money=”total=$event”可以简化为:money.sync=”total”</strong></p>
-<p>下面是运行动画：</p>
-<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/12/17207b0ebb162b47~tplv-t2oaga2asx-watermark.awebp"></p>
-<p><a href="https://codesandbox.io/s/eloquent-wave-bc7bb">代码点击</a></p>
-<h3 id="v-model"><a href="#v-model" class="headerlink" title="v-model"></a>v-model</h3><p>v-model 也是个语法糖</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">v-model=&quot;x&quot;等价于 ：value=&quot;x&quot;,@input=&quot;x=$event.target.value&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>当 v-model 用于普通 input 上</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &#123;&#123;message&#125;&#125;</span><br><span class="line">    &lt;hr/&gt;</span><br><span class="line">    &lt;input v-model=&quot;message&quot; placeholder=&quot;你好&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      message: &quot;&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>动画演示：</p>
-<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/3/17277f6ca1d24f4d~tplv-t2oaga2asx-watermark.awebp"></p>
-<p>当 v-model 用于组件上</p>
-<p>父组件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &#123;&#123;price&#125;&#125;</span><br><span class="line">        &lt;hr/&gt;</span><br><span class="line">        &lt;test v-model=&quot;price&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    import test from &#x27;./components/Test.vue&#x27;;</span><br><span class="line">    export default &#123;</span><br><span class="line">        components:&#123;test&#125;,</span><br><span class="line">        name: &quot;App&quot;,</span><br><span class="line">        data()&#123;</span><br><span class="line">            return&#123;</span><br><span class="line">                price:100</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;子组件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>子组件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;label&gt;</span><br><span class="line">      &lt;input ref=&quot;input&quot; :value=&quot;value&quot;</span><br><span class="line">      @input=&quot;$emit(&#x27;input&#x27;, $event.target.value)&quot;//子组件触发事件，把输入的参数传给price</span><br><span class="line">      &gt;</span><br><span class="line">    &lt;/label&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  props: [&quot;value&quot;],//子组件把value传给父组件，父组件绑定value=&quot;price&quot;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>由上面代码我们可以看出子组件把 value 传给父组件，因为<strong> v-model=”price”等价于 ：value=”price”,@input=”price=$event.target.value”,</strong>父组件动态绑定了 value，然后 input 事件那输入的 value 参数传给了 price,所以我们就能看到以下效果：</p>
-<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/3/1727846768ecc1e0~tplv-t2oaga2asx-watermark.awebp"></p>
-]]></content>
-      <tags>
-        <tag>Vue</tag>
       </tags>
   </entry>
 </search>
