@@ -1,35 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hexo nexT 7.8.0 添加背景图片</title>
-    <url>/posts/b56cb502/</url>
-    <content><![CDATA[<p>版本信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;hexo&quot;: &quot;^5.0.0&quot;,</span><br><span class="line">&quot;NexT&quot;: &quot;7.8.0&quot;,</span><br></pre></td></tr></table></figure>
-
-<p><strong>由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。</strong></p>
-<p>在这里提醒下<strong>不要打开</strong>themes/next/_config.yml 配置文件搜索 custom 以下代码里的 style 的 注释（博主踩过坑）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  #head: source/_data/head.swig</span><br><span class="line">  #header: source/_data/header.swig</span><br><span class="line">  #sidebar: source/_data/sidebar.swig</span><br><span class="line">  #postMeta: source/_data/post-meta.swig</span><br><span class="line">  #postBodyEnd: source/_data/post-body-end.swig</span><br><span class="line">  #footer: source/_data/footer.swig</span><br><span class="line">  #bodyEnd: source/_data/body-end.swig</span><br><span class="line">  #variable: source/_data/variables.styl</span><br><span class="line">  #mixin: source/_data/mixins.styl</span><br><span class="line">  # style: source/_data/styles.styl</span><br></pre></td></tr></table></figure>
-
-<p>首先在 themes/next/souces/images 添加你喜欢的背景图片，这里我推荐在知乎里面找推荐。</p>
-<p>然后在 themes/next/souces 下新建_data 文件，创建 styles.styl,添加内容</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background:url(/images/background.jpg); // 可以是路径也可以是链接</span><br><span class="line">    background-repeat: no-repeat; // 不重复</span><br><span class="line">    background-attachment:fixed; // 固定住背景图片</span><br><span class="line">    background-position:50% 50%; // 图片位置：居中</span><br><span class="line">    background-size: 100% 100%; // 图片长宽扩充为100%</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>最后需要在 yourblog/themes/next/source/css 下找到 main.styl 文件，并在最后一行添上如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@import &quot;../_data/styles.styl&quot;;</span><br></pre></td></tr></table></figure>
-
-<p>最后的最后</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
-
-<p>就可以看到最终效果了！！！！</p>
-]]></content>
-      <categories>
-        <category>Next</category>
-      </categories>
-      <tags>
-        <tag>Next</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>mobx 和 mobx-react 入门</title>
     <url>/posts/e13966ac/</url>
     <content><![CDATA[<h2 id="1-为什么需要状态管理？"><a href="#1-为什么需要状态管理？" class="headerlink" title="1.为什么需要状态管理？"></a>1.为什么需要状态管理？</h2><h3 id="组件内"><a href="#组件内" class="headerlink" title="组件内"></a>组件内</h3><ul>
@@ -128,6 +99,35 @@
       </categories>
       <tags>
         <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo nexT 7.8.0 添加背景图片</title>
+    <url>/posts/b56cb502/</url>
+    <content><![CDATA[<p>版本信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;hexo&quot;: &quot;^5.0.0&quot;,</span><br><span class="line">&quot;NexT&quot;: &quot;7.8.0&quot;,</span><br></pre></td></tr></table></figure>
+
+<p><strong>由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。</strong></p>
+<p>在这里提醒下<strong>不要打开</strong>themes/next/_config.yml 配置文件搜索 custom 以下代码里的 style 的 注释（博主踩过坑）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  #head: source/_data/head.swig</span><br><span class="line">  #header: source/_data/header.swig</span><br><span class="line">  #sidebar: source/_data/sidebar.swig</span><br><span class="line">  #postMeta: source/_data/post-meta.swig</span><br><span class="line">  #postBodyEnd: source/_data/post-body-end.swig</span><br><span class="line">  #footer: source/_data/footer.swig</span><br><span class="line">  #bodyEnd: source/_data/body-end.swig</span><br><span class="line">  #variable: source/_data/variables.styl</span><br><span class="line">  #mixin: source/_data/mixins.styl</span><br><span class="line">  # style: source/_data/styles.styl</span><br></pre></td></tr></table></figure>
+
+<p>首先在 themes/next/souces/images 添加你喜欢的背景图片，这里我推荐在知乎里面找推荐。</p>
+<p>然后在 themes/next/souces 下新建_data 文件，创建 styles.styl,添加内容</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background:url(/images/background.jpg); // 可以是路径也可以是链接</span><br><span class="line">    background-repeat: no-repeat; // 不重复</span><br><span class="line">    background-attachment:fixed; // 固定住背景图片</span><br><span class="line">    background-position:50% 50%; // 图片位置：居中</span><br><span class="line">    background-size: 100% 100%; // 图片长宽扩充为100%</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最后需要在 yourblog/themes/next/source/css 下找到 main.styl 文件，并在最后一行添上如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@import &quot;../_data/styles.styl&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>最后的最后</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>就可以看到最终效果了！！！！</p>
+]]></content>
+      <categories>
+        <category>Next</category>
+      </categories>
+      <tags>
+        <tag>Next</tag>
       </tags>
   </entry>
   <entry>
