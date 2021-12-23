@@ -2,7 +2,7 @@
 title: 如何理解Vue的.sync修饰符以及v-model
 tags: Vue
 abbrlink: 1c175475
-date: 2021-11-26 14:34:32
+date: 2020-11-26 14:34:32
 categories: Vue
 ---
 

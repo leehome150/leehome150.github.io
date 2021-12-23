@@ -1,9 +1,9 @@
 ---
 title: Hexo nexT 7.8.0 添加背景图片
 abbrlink: b56cb502
-date: 2021-11-27 16:54:22
-tags: Next
-categories: Next
+date: 2020-11-27 16:54:22
+tags: hexo
+categories: hexo
 ---
 
 版本信息
