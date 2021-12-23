@@ -102,6 +102,48 @@
       </tags>
   </entry>
   <entry>
+    <title>Next.js 的三种渲染方式</title>
+    <url>/posts/b2ae764/</url>
+    <content><![CDATA[<blockquote>
+<p>客户端渲染(BSR)<br>静态页面生成(SSG)<br>服务端渲染(SSR)</p>
+</blockquote>
+<ul>
+<li><h4 id="客户端渲染-BSR"><a href="#客户端渲染-BSR" class="headerlink" title="客户端渲染(BSR)"></a>客户端渲染(BSR)</h4></li>
+</ul>
+<p>顾名思义，客户端渲染只是在浏览器执行的渲染，我们一半用 JS、React、Vue 创建 HTML,举个例子：我们渲染一个列表:<br>我们先通过 usePost 这个自定义 Hook 通过 axios 返回一个的文件列表：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const usePosts = () =&gt; &#123;</span><br><span class="line">  const [posts, set_posts] = useState&lt;Acticle[]&gt;();</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    axios.get(&quot;/api/v1/posts&quot;).then((res) =&gt; &#123;</span><br><span class="line">      set_posts(res.data);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;, []);</span><br><span class="line">  return &#123; posts &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们然后把他渲染在页面上：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const posts = () =&gt; &#123;</span><br><span class="line">  const &#123; posts &#125; = usePosts();</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;文章列表&lt;/h1&gt;</span><br><span class="line">      &#123;posts?.map((item) =&gt; &#123;</span><br><span class="line">        return &lt;div key=&#123;item.id&#125;&gt;&#123;item.title&#125;&lt;/div&gt;;</span><br><span class="line">      &#125;)&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>由上面我们可以知道客户端渲染通过<strong> AJAX</strong> 得到成功响应，然后渲染动态内容（静态内容与服务器渲染，比如：文章列表这几个字）。这也是我们现如今比较常用的渲染方式，因为大部分公司都是前后端分离。</p>
+<p>他的缺点也很明显：</p>
+<ul>
+<li>白屏<br>但是我们在 set_posts(res.data)之前打个 debugger,发现页面看不到文章了。</li>
+<li>SEO 不友好<br>我们打开源代码会发现看不到渲染的数据，只看到引用的 JS,因为搜索引擎不会执行 JS,只能看到 HTML。</li>
+</ul>
+<p>这也有了下面两种渲染方式的用武之地：</p>
+<ul>
+<li><h4 id="静态文件生成-SSG"><a href="#静态文件生成-SSG" class="headerlink" title="静态文件生成(SSG)"></a>静态文件生成(SSG)</h4></li>
+</ul>
+<p>背景：如果返回的文件与用户无关，都是一样的，那为什么不一次生成，然后发给每个人，N 次客户端渲染就变成了一次静态页面生成，这个就叫做动态内容静态化。</p>
+<p>Next.js 提供 getStaticProps 这个 API,就可以直接通过 Props 传入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const posts: NextPage&lt;Props&gt; = (props) =&gt; &#123;</span><br><span class="line">  const &#123; posts &#125; = props;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;content&quot;&gt;</span><br><span class="line">      &lt;h1&gt;文章列表&lt;/h1&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;posts?.map((item) =&gt; &#123;</span><br><span class="line">          return (</span><br><span class="line">            &lt;Link href=&#123;`/posts/$&#123;item.title&#125;`&#125; key=&#123;item.title&#125;&gt;</span><br><span class="line">              &lt;a&gt;</span><br><span class="line">                &lt;li key=&#123;item.title&#125;&gt;</span><br><span class="line">                  &#123;item.id&#125;.&#123;item.title&#125;</span><br><span class="line">                &lt;/li&gt;</span><br><span class="line">              &lt;/a&gt;</span><br><span class="line">            &lt;/Link&gt;</span><br><span class="line">          );</span><br><span class="line">        &#125;)&#125;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default posts;</span><br><span class="line"></span><br><span class="line">export const getStaticProps = async () =&gt; &#123;</span><br><span class="line">  const posts = await getPosts();</span><br><span class="line">  return &#123;</span><br><span class="line">    props: &#123; posts: JSON.parse(JSON.stringify(posts)) &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样的好处：我们不用 AJAX 也能拿到内容，不会白屏，而且我们查看源代码也能看到数据内容，也有利于 SEO。</p>
+<ul>
+<li><h4 id="服务端渲染（SSR）"><a href="#服务端渲染（SSR）" class="headerlink" title="服务端渲染（SSR）"></a>服务端渲染（SSR）</h4>如果动态内容与用户先关联，较难提前静态化，这个时候我们可以使用服务端渲染。<br>Next.js 提供 getStaticProps 这个 API,就可以直接通过 Props 传入,比如我们获取用户的浏览器类型：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const Index: NextPage&lt;Props&gt; = (props) =&gt; &#123;</span><br><span class="line">const &#123; browser &#125; = props;</span><br><span class="line">return (</span><br><span class="line">  &lt;div className=&#123;styles.container&#125;&gt;</span><br><span class="line">    &lt;h1&gt;</span><br><span class="line">      你的浏览器是&#123;browser.name&#125;,版本为&#123;browser.version&#125;</span><br><span class="line">    &lt;/h1&gt;</span><br><span class="line">    &lt;img src=&#123;img&#125; alt=&quot;&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">);</span><br><span class="line">&#125;;</span><br><span class="line">export default Index;</span><br><span class="line">export const getServerSideProps: GetServerSideProps = async (context) =&gt; &#123;</span><br><span class="line">const ua = context.req.headers[&quot;user-agent&quot;];</span><br><span class="line">const result = new UAParser(ua).getResult();</span><br><span class="line">return &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    browser: result.browser,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+服务端渲染的好处也是不会白屏，有利于 SEO 优化，相比于 SSG 能实现服务端渲染跟用户相关的动态内容。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Next.js</category>
+      </categories>
+      <tags>
+        <tag>Next.js</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo nexT 7.8.0 添加背景图片</title>
     <url>/posts/b56cb502/</url>
     <content><![CDATA[<p>版本信息</p>
@@ -124,10 +166,10 @@
 <p>就可以看到最终效果了！！！！</p>
 ]]></content>
       <categories>
-        <category>Next</category>
+        <category>hexo</category>
       </categories>
       <tags>
-        <tag>Next</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>

@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"leehome150.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="版本信息 12&quot;hexo&quot;: &quot;^5.0.0&quot;,&quot;NexT&quot;: &quot;7.8.0&quot;,  由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。 在这里提醒下不要打开themes&#x2F;next&#x2F;_config.yml 配置文件搜索 custom 以下代码里的">
+  <meta name="description" content="客户端渲染(BSR)静态页面生成(SSG)服务端渲染(SSR)   客户端渲染(BSR)  顾名思义，客户端渲染只是在浏览器执行的渲染，我们一半用 JS、React、Vue 创建 HTML,举个例子：我们渲染一个列表:我们先通过 usePost 这个自定义 Hook 通过 axios 返回一个的文件列表： 123456789const usePosts &#x3D; () &#x3D;&gt; &amp;#123;  co">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo nexT 7.8.0 添加背景图片">
-<meta property="og:url" content="https://leehome150.github.io/posts/b56cb502/index.html">
+<meta property="og:title" content="Next.js 的三种渲染方式">
+<meta property="og:url" content="https://leehome150.github.io/posts/b2ae764/index.html">
 <meta property="og:site_name" content="leehome">
-<meta property="og:description" content="版本信息 12&quot;hexo&quot;: &quot;^5.0.0&quot;,&quot;NexT&quot;: &quot;7.8.0&quot;,  由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。 在这里提醒下不要打开themes&#x2F;next&#x2F;_config.yml 配置文件搜索 custom 以下代码里的">
+<meta property="og:description" content="客户端渲染(BSR)静态页面生成(SSG)服务端渲染(SSR)   客户端渲染(BSR)  顾名思义，客户端渲染只是在浏览器执行的渲染，我们一半用 JS、React、Vue 创建 HTML,举个例子：我们渲染一个列表:我们先通过 usePost 这个自定义 Hook 通过 axios 返回一个的文件列表： 123456789const usePosts &#x3D; () &#x3D;&gt; &amp;#123;  co">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-27T08:54:22.000Z">
-<meta property="article:modified_time" content="2021-12-23T07:13:29.395Z">
+<meta property="article:published_time" content="2021-12-23T07:06:56.000Z">
+<meta property="article:modified_time" content="2021-12-23T08:19:08.639Z">
 <meta property="article:author" content="leehome">
-<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="Next.js">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://leehome150.github.io/posts/b56cb502/">
+<link rel="canonical" href="https://leehome150.github.io/posts/b2ae764/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>Hexo nexT 7.8.0 添加背景图片 | leehome</title>
+  <title>Next.js 的三种渲染方式 | leehome</title>
   
 
 
@@ -201,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://leehome150.github.io/posts/b56cb502/">
+    <link itemprop="mainEntityOfPage" href="https://leehome150.github.io/posts/b2ae764/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -214,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hexo nexT 7.8.0 添加背景图片
+          Next.js 的三种渲染方式
         </h1>
 
         <div class="post-meta">
@@ -223,8 +223,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-11-27 16:54:22" itemprop="dateCreated datePublished" datetime="2020-11-27T16:54:22+08:00">2020-11-27</time>
+              <time title="创建时间：2021-12-23 15:06:56 / 修改时间：16:19:08" itemprop="dateCreated datePublished" datetime="2021-12-23T15:06:56+08:00">2021-12-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -232,7 +233,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
+                  <a href="/categories/Next-js/" itemprop="url" rel="index"><span itemprop="name">Next.js</span></a>
                 </span>
             </span>
 
@@ -245,8 +246,8 @@
       </span>
       <span class="post-meta-item-text">评论数：</span>
     
-    <a title="valine" href="/posts/b56cb502/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/b56cb502/" itemprop="commentCount"></span>
+    <a title="valine" href="/posts/b2ae764/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/b2ae764/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -261,24 +262,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>版本信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;hexo&quot;: &quot;^5.0.0&quot;,</span><br><span class="line">&quot;NexT&quot;: &quot;7.8.0&quot;,</span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p>客户端渲染(BSR)<br>静态页面生成(SSG)<br>服务端渲染(SSR)</p>
+</blockquote>
+<ul>
+<li><h4 id="客户端渲染-BSR"><a href="#客户端渲染-BSR" class="headerlink" title="客户端渲染(BSR)"></a>客户端渲染(BSR)</h4></li>
+</ul>
+<p>顾名思义，客户端渲染只是在浏览器执行的渲染，我们一半用 JS、React、Vue 创建 HTML,举个例子：我们渲染一个列表:<br>我们先通过 usePost 这个自定义 Hook 通过 axios 返回一个的文件列表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const usePosts = () =&gt; &#123;</span><br><span class="line">  const [posts, set_posts] = useState&lt;Acticle[]&gt;();</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    axios.get(&quot;/api/v1/posts&quot;).then((res) =&gt; &#123;</span><br><span class="line">      set_posts(res.data);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;, []);</span><br><span class="line">  return &#123; posts &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p><strong>由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。</strong></p>
-<p>在这里提醒下<strong>不要打开</strong>themes/next/_config.yml 配置文件搜索 custom 以下代码里的 style 的 注释（博主踩过坑）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  #head: source/_data/head.swig</span><br><span class="line">  #header: source/_data/header.swig</span><br><span class="line">  #sidebar: source/_data/sidebar.swig</span><br><span class="line">  #postMeta: source/_data/post-meta.swig</span><br><span class="line">  #postBodyEnd: source/_data/post-body-end.swig</span><br><span class="line">  #footer: source/_data/footer.swig</span><br><span class="line">  #bodyEnd: source/_data/body-end.swig</span><br><span class="line">  #variable: source/_data/variables.styl</span><br><span class="line">  #mixin: source/_data/mixins.styl</span><br><span class="line">  # style: source/_data/styles.styl</span><br></pre></td></tr></table></figure>
+<p>我们然后把他渲染在页面上：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const posts = () =&gt; &#123;</span><br><span class="line">  const &#123; posts &#125; = usePosts();</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;文章列表&lt;/h1&gt;</span><br><span class="line">      &#123;posts?.map((item) =&gt; &#123;</span><br><span class="line">        return &lt;div key=&#123;item.id&#125;&gt;&#123;item.title&#125;&lt;/div&gt;;</span><br><span class="line">      &#125;)&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>首先在 themes/next/souces/images 添加你喜欢的背景图片，这里我推荐在知乎里面找推荐。</p>
-<p>然后在 themes/next/souces 下新建_data 文件，创建 styles.styl,添加内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background:url(/images/background.jpg); // 可以是路径也可以是链接</span><br><span class="line">    background-repeat: no-repeat; // 不重复</span><br><span class="line">    background-attachment:fixed; // 固定住背景图片</span><br><span class="line">    background-position:50% 50%; // 图片位置：居中</span><br><span class="line">    background-size: 100% 100%; // 图片长宽扩充为100%</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>由上面我们可以知道客户端渲染通过<strong> AJAX</strong> 得到成功响应，然后渲染动态内容（静态内容与服务器渲染，比如：文章列表这几个字）。这也是我们现如今比较常用的渲染方式，因为大部分公司都是前后端分离。</p>
+<p>他的缺点也很明显：</p>
+<ul>
+<li>白屏<br>但是我们在 set_posts(res.data)之前打个 debugger,发现页面看不到文章了。</li>
+<li>SEO 不友好<br>我们打开源代码会发现看不到渲染的数据，只看到引用的 JS,因为搜索引擎不会执行 JS,只能看到 HTML。</li>
+</ul>
+<p>这也有了下面两种渲染方式的用武之地：</p>
+<ul>
+<li><h4 id="静态文件生成-SSG"><a href="#静态文件生成-SSG" class="headerlink" title="静态文件生成(SSG)"></a>静态文件生成(SSG)</h4></li>
+</ul>
+<p>背景：如果返回的文件与用户无关，都是一样的，那为什么不一次生成，然后发给每个人，N 次客户端渲染就变成了一次静态页面生成，这个就叫做动态内容静态化。</p>
+<p>Next.js 提供 getStaticProps 这个 API,就可以直接通过 Props 传入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">const posts: NextPage&lt;Props&gt; = (props) =&gt; &#123;</span><br><span class="line">  const &#123; posts &#125; = props;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;content&quot;&gt;</span><br><span class="line">      &lt;h1&gt;文章列表&lt;/h1&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;posts?.map((item) =&gt; &#123;</span><br><span class="line">          return (</span><br><span class="line">            &lt;Link href=&#123;`/posts/$&#123;item.title&#125;`&#125; key=&#123;item.title&#125;&gt;</span><br><span class="line">              &lt;a&gt;</span><br><span class="line">                &lt;li key=&#123;item.title&#125;&gt;</span><br><span class="line">                  &#123;item.id&#125;.&#123;item.title&#125;</span><br><span class="line">                &lt;/li&gt;</span><br><span class="line">              &lt;/a&gt;</span><br><span class="line">            &lt;/Link&gt;</span><br><span class="line">          );</span><br><span class="line">        &#125;)&#125;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default posts;</span><br><span class="line"></span><br><span class="line">export const getStaticProps = async () =&gt; &#123;</span><br><span class="line">  const posts = await getPosts();</span><br><span class="line">  return &#123;</span><br><span class="line">    props: &#123; posts: JSON.parse(JSON.stringify(posts)) &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>最后需要在 yourblog/themes/next/source/css 下找到 main.styl 文件，并在最后一行添上如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@import &quot;../_data/styles.styl&quot;;</span><br></pre></td></tr></table></figure>
-
-<p>最后的最后</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
-
-<p>就可以看到最终效果了！！！！</p>
+<p>这样的好处：我们不用 AJAX 也能拿到内容，不会白屏，而且我们查看源代码也能看到数据内容，也有利于 SEO。</p>
+<ul>
+<li><h4 id="服务端渲染（SSR）"><a href="#服务端渲染（SSR）" class="headerlink" title="服务端渲染（SSR）"></a>服务端渲染（SSR）</h4>如果动态内容与用户先关联，较难提前静态化，这个时候我们可以使用服务端渲染。<br>Next.js 提供 getStaticProps 这个 API,就可以直接通过 Props 传入,比如我们获取用户的浏览器类型：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">const Index: NextPage&lt;Props&gt; = (props) =&gt; &#123;</span><br><span class="line">const &#123; browser &#125; = props;</span><br><span class="line">return (</span><br><span class="line">  &lt;div className=&#123;styles.container&#125;&gt;</span><br><span class="line">    &lt;h1&gt;</span><br><span class="line">      你的浏览器是&#123;browser.name&#125;,版本为&#123;browser.version&#125;</span><br><span class="line">    &lt;/h1&gt;</span><br><span class="line">    &lt;img src=&#123;img&#125; alt=&quot;&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">);</span><br><span class="line">&#125;;</span><br><span class="line">export default Index;</span><br><span class="line">export const getServerSideProps: GetServerSideProps = async (context) =&gt; &#123;</span><br><span class="line">const ua = context.req.headers[&quot;user-agent&quot;];</span><br><span class="line">const result = new UAParser(ua).getResult();</span><br><span class="line">return &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    browser: result.browser,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+服务端渲染的好处也是不会白屏，有利于 SEO 优化，相比于 SSG 能实现服务端渲染跟用户相关的动态内容。</li>
+</ul>
 
     </div>
 
@@ -294,7 +308,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://leehome150.github.io/posts/b56cb502/" title="Hexo nexT 7.8.0 添加背景图片">https://leehome150.github.io/posts/b56cb502/</a>
+    <a href="https://leehome150.github.io/posts/b2ae764/" title="Next.js 的三种渲染方式">https://leehome150.github.io/posts/b2ae764/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -306,7 +320,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/hexo/" rel="tag"><i class="fa fa-tag"></i> hexo</a>
+              <a href="/tags/Next-js/" rel="tag"><i class="fa fa-tag"></i> Next.js</a>
           </div>
 
         
@@ -315,13 +329,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/1c175475/" rel="prev" title="如何理解Vue的.sync修饰符以及v-model">
-      <i class="fa fa-chevron-left"></i> 如何理解Vue的.sync修饰符以及v-model
+    <a href="/posts/b56cb502/" rel="prev" title="Hexo nexT 7.8.0 添加背景图片">
+      <i class="fa fa-chevron-left"></i> Hexo nexT 7.8.0 添加背景图片
     </a></div>
-      <div class="post-nav-item">
-    <a href="/posts/b2ae764/" rel="next" title="Next.js 的三种渲染方式">
-      Next.js 的三种渲染方式 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -382,6 +393,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93-BSR"><span class="nav-number">1.</span> <span class="nav-text">客户端渲染(BSR)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90-SSG"><span class="nav-number">2.</span> <span class="nav-text">静态文件生成(SSG)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B8%B2%E6%9F%93%EF%BC%88SSR%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">服务端渲染（SSR）</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
