@@ -257,8 +257,9 @@
 
       
           <blockquote>
-<p>手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊<br><strong>什么是 EventHub</strong></p>
+<p>手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊</p>
 </blockquote>
+<p><strong>什么是 EventHub</strong></p>
 <p>EventHub 是基于<strong>发布订阅模式</strong>实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。</p>
 <p>今天我们就简单的实现 EventHub 的<code>发布、订阅和取消订阅</code>：<br>首先我们确定<code>Api</code>:</p>
 <ul>
@@ -272,8 +273,6 @@
 
 <p>当我们订阅一个事件的时候，我们把这个事件 push 到订阅的东西的事件队列中，比如我在手机闹钟里面订了个 3 秒后的闹钟:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> EventHub <span class="keyword">from</span> <span class="string">&quot;../src/index&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> eventHub = <span class="keyword">new</span> EventHub();</span><br><span class="line"></span><br><span class="line">eventHub.on(<span class="string">&quot;闹钟&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;闹钟响了&quot;</span>);</span><br><span class="line">  &#125;, <span class="number">3000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">eventHub.emit(<span class="string">&quot;闹钟&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>然后我们在类里面的<code>on</code>函数把事件 push 进去：</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/ee1ff54b/#more" rel="contents">

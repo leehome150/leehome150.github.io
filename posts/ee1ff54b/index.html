@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"leehome150.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊什么是 EventHub  EventHub 是基于发布订阅模式实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。 今天我们就简单的实现 EventHub 的发布、订阅和取消订阅：首先我们确定Api:  on 订阅（监听） emit 发布（触发） off 取消订阅  实现发布和订阅 我们得用一个变">
+  <meta name="description" content="手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊  什么是 EventHub EventHub 是基于发布订阅模式实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。 今天我们就简单的实现 EventHub 的发布、订阅和取消订阅：首先我们确定Api:  on 订阅（监听） emit 发布（触发） off 取消订阅  实现发布和订阅 我们得用一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="手把手教你写EventHub（发布-订阅）">
 <meta property="og:url" content="https://leehome150.github.io/posts/ee1ff54b/index.html">
 <meta property="og:site_name" content="leehome">
-<meta property="og:description" content="手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊什么是 EventHub  EventHub 是基于发布订阅模式实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。 今天我们就简单的实现 EventHub 的发布、订阅和取消订阅：首先我们确定Api:  on 订阅（监听） emit 发布（触发） off 取消订阅  实现发布和订阅 我们得用一个变">
+<meta property="og:description" content="手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊  什么是 EventHub EventHub 是基于发布订阅模式实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。 今天我们就简单的实现 EventHub 的发布、订阅和取消订阅：首先我们确定Api:  on 订阅（监听） emit 发布（触发） off 取消订阅  实现发布和订阅 我们得用一个">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7adeff31547c4b26b739a077107dd40e~tplv-k3u1fbpfcp-watermark.image">
 <meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cece88b0c35949d7b82db8fca752b106~tplv-k3u1fbpfcp-watermark.image">
 <meta property="article:published_time" content="2021-10-12T08:51:34.000Z">
-<meta property="article:modified_time" content="2022-01-12T08:54:37.263Z">
+<meta property="article:modified_time" content="2022-01-12T08:59:15.672Z">
 <meta property="article:author" content="leehome">
 <meta property="article:tag" content="eventHub">
 <meta name="twitter:card" content="summary">
@@ -265,8 +265,9 @@
 
       
         <blockquote>
-<p>手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊<br><strong>什么是 EventHub</strong></p>
+<p>手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊</p>
 </blockquote>
+<p><strong>什么是 EventHub</strong></p>
 <p>EventHub 是基于<strong>发布订阅模式</strong>实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。</p>
 <p>今天我们就简单的实现 EventHub 的<code>发布、订阅和取消订阅</code>：<br>首先我们确定<code>Api</code>:</p>
 <ul>

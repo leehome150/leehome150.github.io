@@ -4,8 +4,9 @@
     <title>手把手教你写EventHub（发布-订阅）</title>
     <url>/posts/ee1ff54b/</url>
     <content><![CDATA[<blockquote>
-<p>手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊<br><strong>什么是 EventHub</strong></p>
+<p>手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊</p>
 </blockquote>
+<p><strong>什么是 EventHub</strong></p>
 <p>EventHub 是基于<strong>发布订阅模式</strong>实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。</p>
 <p>今天我们就简单的实现 EventHub 的<code>发布、订阅和取消订阅</code>：<br>首先我们确定<code>Api</code>:</p>
 <ul>
@@ -41,6 +42,35 @@
       </categories>
       <tags>
         <tag>eventHub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo nexT 7.8.0 添加背景图片</title>
+    <url>/posts/b56cb502/</url>
+    <content><![CDATA[<p>版本信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;hexo&quot;: &quot;^5.0.0&quot;,</span><br><span class="line">&quot;NexT&quot;: &quot;7.8.0&quot;,</span><br></pre></td></tr></table></figure>
+
+<p><strong>由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。</strong></p>
+<p>在这里提醒下<strong>不要打开</strong>themes/next/_config.yml 配置文件搜索 custom 以下代码里的 style 的 注释（博主踩过坑）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  #head: source/_data/head.swig</span><br><span class="line">  #header: source/_data/header.swig</span><br><span class="line">  #sidebar: source/_data/sidebar.swig</span><br><span class="line">  #postMeta: source/_data/post-meta.swig</span><br><span class="line">  #postBodyEnd: source/_data/post-body-end.swig</span><br><span class="line">  #footer: source/_data/footer.swig</span><br><span class="line">  #bodyEnd: source/_data/body-end.swig</span><br><span class="line">  #variable: source/_data/variables.styl</span><br><span class="line">  #mixin: source/_data/mixins.styl</span><br><span class="line">  # style: source/_data/styles.styl</span><br></pre></td></tr></table></figure>
+
+<p>首先在 themes/next/souces/images 添加你喜欢的背景图片，这里我推荐在知乎里面找推荐。</p>
+<p>然后在 themes/next/souces 下新建_data 文件，创建 styles.styl,添加内容</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background:url(/images/background.jpg); // 可以是路径也可以是链接</span><br><span class="line">    background-repeat: no-repeat; // 不重复</span><br><span class="line">    background-attachment:fixed; // 固定住背景图片</span><br><span class="line">    background-position:50% 50%; // 图片位置：居中</span><br><span class="line">    background-size: 100% 100%; // 图片长宽扩充为100%</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最后需要在 yourblog/themes/next/source/css 下找到 main.styl 文件，并在最后一行添上如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@import &quot;../_data/styles.styl&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>最后的最后</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>就可以看到最终效果了！！！！</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -83,35 +113,6 @@
       </categories>
       <tags>
         <tag>Next.js</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo nexT 7.8.0 添加背景图片</title>
-    <url>/posts/b56cb502/</url>
-    <content><![CDATA[<p>版本信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;hexo&quot;: &quot;^5.0.0&quot;,</span><br><span class="line">&quot;NexT&quot;: &quot;7.8.0&quot;,</span><br></pre></td></tr></table></figure>
-
-<p><strong>由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。</strong></p>
-<p>在这里提醒下<strong>不要打开</strong>themes/next/_config.yml 配置文件搜索 custom 以下代码里的 style 的 注释（博主踩过坑）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  #head: source/_data/head.swig</span><br><span class="line">  #header: source/_data/header.swig</span><br><span class="line">  #sidebar: source/_data/sidebar.swig</span><br><span class="line">  #postMeta: source/_data/post-meta.swig</span><br><span class="line">  #postBodyEnd: source/_data/post-body-end.swig</span><br><span class="line">  #footer: source/_data/footer.swig</span><br><span class="line">  #bodyEnd: source/_data/body-end.swig</span><br><span class="line">  #variable: source/_data/variables.styl</span><br><span class="line">  #mixin: source/_data/mixins.styl</span><br><span class="line">  # style: source/_data/styles.styl</span><br></pre></td></tr></table></figure>
-
-<p>首先在 themes/next/souces/images 添加你喜欢的背景图片，这里我推荐在知乎里面找推荐。</p>
-<p>然后在 themes/next/souces 下新建_data 文件，创建 styles.styl,添加内容</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background:url(/images/background.jpg); // 可以是路径也可以是链接</span><br><span class="line">    background-repeat: no-repeat; // 不重复</span><br><span class="line">    background-attachment:fixed; // 固定住背景图片</span><br><span class="line">    background-position:50% 50%; // 图片位置：居中</span><br><span class="line">    background-size: 100% 100%; // 图片长宽扩充为100%</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>最后需要在 yourblog/themes/next/source/css 下找到 main.styl 文件，并在最后一行添上如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@import &quot;../_data/styles.styl&quot;;</span><br></pre></td></tr></table></figure>
-
-<p>最后的最后</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
-
-<p>就可以看到最终效果了！！！！</p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
