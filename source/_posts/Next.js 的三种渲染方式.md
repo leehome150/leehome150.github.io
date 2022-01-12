@@ -2,7 +2,6 @@
 title: Next.js 的三种渲染方式
 abbrlink: b2ae764
 date: 2021-12-23 15:06:56
-top: true
 tags: Next.js
 categories: Next.js
 comments: true
