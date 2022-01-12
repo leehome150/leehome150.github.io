@@ -20,20 +20,23 @@
     var CONFIG = {"hostname":"leehome150.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="版本信息 12&quot;hexo&quot;: &quot;^5.0.0&quot;,&quot;NexT&quot;: &quot;7.8.0&quot;,  由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。 在这里提醒下不要打开themes&#x2F;next&#x2F;_config.yml 配置文件搜索 custom 以下代码里的">
+  <meta name="description" content="手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊什么是 EventHub  EventHub 是基于发布订阅模式实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。 今天我们就简单的实现 EventHub 的发布、订阅和取消订阅：首先我们确定Api:  on 订阅（监听） emit 发布（触发） off 取消订阅  实现发布和订阅 我们得用一个变">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo nexT 7.8.0 添加背景图片">
-<meta property="og:url" content="https://leehome150.github.io/posts/b56cb502/index.html">
+<meta property="og:title" content="手把手教你写EventHub（发布-订阅）">
+<meta property="og:url" content="https://leehome150.github.io/posts/ee1ff54b/index.html">
 <meta property="og:site_name" content="leehome">
-<meta property="og:description" content="版本信息 12&quot;hexo&quot;: &quot;^5.0.0&quot;,&quot;NexT&quot;: &quot;7.8.0&quot;,  由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。 在这里提醒下不要打开themes&#x2F;next&#x2F;_config.yml 配置文件搜索 custom 以下代码里的">
+<meta property="og:description" content="手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊什么是 EventHub  EventHub 是基于发布订阅模式实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。 今天我们就简单的实现 EventHub 的发布、订阅和取消订阅：首先我们确定Api:  on 订阅（监听） emit 发布（触发） off 取消订阅  实现发布和订阅 我们得用一个变">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-27T08:54:22.000Z">
-<meta property="article:modified_time" content="2021-12-23T07:13:29.395Z">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7adeff31547c4b26b739a077107dd40e~tplv-k3u1fbpfcp-watermark.image">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cece88b0c35949d7b82db8fca752b106~tplv-k3u1fbpfcp-watermark.image">
+<meta property="article:published_time" content="2021-10-12T08:51:34.000Z">
+<meta property="article:modified_time" content="2022-01-12T08:54:37.263Z">
 <meta property="article:author" content="leehome">
-<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="eventHub">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7adeff31547c4b26b739a077107dd40e~tplv-k3u1fbpfcp-watermark.image">
 
-<link rel="canonical" href="https://leehome150.github.io/posts/b56cb502/">
+<link rel="canonical" href="https://leehome150.github.io/posts/ee1ff54b/">
 
 
 <script id="page-configurations">
@@ -46,7 +49,7 @@
   };
 </script>
 
-  <title>Hexo nexT 7.8.0 添加背景图片 | leehome</title>
+  <title>手把手教你写EventHub（发布-订阅） | leehome</title>
   
 
 
@@ -201,7 +204,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://leehome150.github.io/posts/b56cb502/">
+    <link itemprop="mainEntityOfPage" href="https://leehome150.github.io/posts/ee1ff54b/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -214,7 +217,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hexo nexT 7.8.0 添加背景图片
+          手把手教你写EventHub（发布-订阅）
         </h1>
 
         <div class="post-meta">
@@ -224,7 +227,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-11-27 16:54:22" itemprop="dateCreated datePublished" datetime="2020-11-27T16:54:22+08:00">2020-11-27</time>
+              <time title="创建时间：2021-10-12 16:51:34" itemprop="dateCreated datePublished" datetime="2021-10-12T16:51:34+08:00">2021-10-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -232,7 +235,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
+                  <a href="/categories/%E6%89%8B%E5%86%99%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">手写系列</span></a>
                 </span>
             </span>
 
@@ -245,8 +248,8 @@
       </span>
       <span class="post-meta-item-text">评论数：</span>
     
-    <a title="valine" href="/posts/b56cb502/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/b56cb502/" itemprop="commentCount"></span>
+    <a title="valine" href="/posts/ee1ff54b/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/ee1ff54b/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -261,24 +264,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>版本信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;hexo&quot;: &quot;^5.0.0&quot;,</span><br><span class="line">&quot;NexT&quot;: &quot;7.8.0&quot;,</span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p>手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊<br><strong>什么是 EventHub</strong></p>
+</blockquote>
+<p>EventHub 是基于<strong>发布订阅模式</strong>实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。</p>
+<p>今天我们就简单的实现 EventHub 的<code>发布、订阅和取消订阅</code>：<br>首先我们确定<code>Api</code>:</p>
+<ul>
+<li>on 订阅（监听）</li>
+<li>emit 发布（触发）</li>
+<li>off 取消订阅</li>
+</ul>
+<p><strong>实现发布和订阅</strong></p>
+<p>我们得用一个变量<strong>eventMap</strong>来暂存事件名字（key）和事件(value)，这里我们用一个数组来记录事件（因为考虑多次订阅）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventHub</span> </span>&#123;</span><br><span class="line">  private eventMap: &#123; [key: string]: <span class="built_in">Array</span>&lt;<span class="function">(<span class="params">params?</span>) =&gt;</span> <span class="keyword">void</span>&gt; &#125; = &#123;&#125;;</span><br><span class="line">  <span class="function"><span class="title">on</span>(<span class="params">eventName, fn</span>)</span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="title">emit</span>(<span class="params">eventName</span>)</span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="title">off</span>(<span class="params">eventName</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> EventHub;</span><br></pre></td></tr></table></figure>
 
-<p><strong>由于 next 版本较新，next 主题更新至 7.0+版本后取消了_custom 文件夹以及 custom.styl 文件。</strong></p>
-<p>在这里提醒下<strong>不要打开</strong>themes/next/_config.yml 配置文件搜索 custom 以下代码里的 style 的 注释（博主踩过坑）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">custom_file_path:</span><br><span class="line">  #head: source/_data/head.swig</span><br><span class="line">  #header: source/_data/header.swig</span><br><span class="line">  #sidebar: source/_data/sidebar.swig</span><br><span class="line">  #postMeta: source/_data/post-meta.swig</span><br><span class="line">  #postBodyEnd: source/_data/post-body-end.swig</span><br><span class="line">  #footer: source/_data/footer.swig</span><br><span class="line">  #bodyEnd: source/_data/body-end.swig</span><br><span class="line">  #variable: source/_data/variables.styl</span><br><span class="line">  #mixin: source/_data/mixins.styl</span><br><span class="line">  # style: source/_data/styles.styl</span><br></pre></td></tr></table></figure>
+<p>当我们订阅一个事件的时候，我们把这个事件 push 到订阅的东西的事件队列中，比如我在手机闹钟里面订了个 3 秒后的闹钟:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> EventHub <span class="keyword">from</span> <span class="string">&quot;../src/index&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> eventHub = <span class="keyword">new</span> EventHub();</span><br><span class="line"></span><br><span class="line">eventHub.on(<span class="string">&quot;闹钟&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;闹钟响了&quot;</span>);</span><br><span class="line">  &#125;, <span class="number">3000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">eventHub.emit(<span class="string">&quot;闹钟&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<p>首先在 themes/next/souces/images 添加你喜欢的背景图片，这里我推荐在知乎里面找推荐。</p>
-<p>然后在 themes/next/souces 下新建_data 文件，创建 styles.styl,添加内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background:url(/images/background.jpg); // 可以是路径也可以是链接</span><br><span class="line">    background-repeat: no-repeat; // 不重复</span><br><span class="line">    background-attachment:fixed; // 固定住背景图片</span><br><span class="line">    background-position:50% 50%; // 图片位置：居中</span><br><span class="line">    background-size: 100% 100%; // 图片长宽扩充为100%</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>然后我们在类里面的<code>on</code>函数把事件 push 进去：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventHub</span> </span>&#123;</span><br><span class="line">  private eventMap: &#123; [key: string]: <span class="built_in">Array</span>&lt;<span class="function">(<span class="params">params?：any</span>) =&gt;</span> <span class="keyword">void</span>&gt; &#125; = &#123;&#125;;</span><br><span class="line">  <span class="function"><span class="title">on</span>(<span class="params">eventName: string, fn: (params?: any) =&gt; <span class="keyword">void</span></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.eventMap[eventName] = <span class="built_in">this</span>.eventMap[eventName] || [];</span><br><span class="line">    <span class="built_in">this</span>.eventMap[eventName].push(fn);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">emit</span>(<span class="params">eventName</span>)</span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="title">off</span>(<span class="params">eventName</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> EventHub;</span><br></pre></td></tr></table></figure>
 
-<p>最后需要在 yourblog/themes/next/source/css 下找到 main.styl 文件，并在最后一行添上如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@import &quot;../_data/styles.styl&quot;;</span><br></pre></td></tr></table></figure>
+<p>我们在<code>emit</code>触发执行逻辑：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventHub</span> </span>&#123;</span><br><span class="line">  private eventMap: &#123; [key: string]: <span class="built_in">Array</span>&lt;<span class="function">(<span class="params">params?: any</span>) =&gt;</span> <span class="keyword">void</span>&gt; &#125; = &#123;&#125;;</span><br><span class="line">  <span class="function"><span class="title">on</span>(<span class="params">eventName: string, fn: (params?: any) =&gt; <span class="keyword">void</span></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.eventMap[eventName] = <span class="built_in">this</span>.eventMap[eventName] || [];</span><br><span class="line">    <span class="built_in">this</span>.eventMap[eventName].push(fn);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">emit</span>(<span class="params">eventName: string</span>)</span> &#123;</span><br><span class="line">    (<span class="built_in">this</span>.eventMap[eventName] || []).forEach(<span class="function">(<span class="params">fn</span>) =&gt;</span> fn());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">off</span>(<span class="params">eventName: string</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(eventName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> EventHub;</span><br></pre></td></tr></table></figure>
 
-<p>最后的最后</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+<p>执行触发的代码，看控制台（提示：node 运行 ts 文件请下载 ts-node）</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7adeff31547c4b26b739a077107dd40e~tplv-k3u1fbpfcp-watermark.image" alt="image.png"><br><strong>实现取消订阅：</strong><br>当我们在 emit 之前 off 闹钟的订阅</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> EventHub <span class="keyword">from</span> <span class="string">&quot;../src/index&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> eventHub = <span class="keyword">new</span> EventHub();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fn = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;闹钟响了&quot;</span>);</span><br><span class="line">  &#125;, <span class="number">3000</span>);</span><br><span class="line">&#125;;</span><br><span class="line">eventHub.on(<span class="string">&quot;闹钟&quot;</span>, fn);</span><br><span class="line">eventHub.off(<span class="string">&quot;闹钟&quot;</span>, fn);</span><br><span class="line">eventHub.emit(<span class="string">&quot;闹钟&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<p>就可以看到最终效果了！！！！</p>
+<p>加上取消订阅的逻辑：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">off</span>(<span class="params">eventName: string, fn: (params?: any) =&gt; <span class="keyword">void</span></span>)</span> &#123;</span><br><span class="line">   <span class="keyword">const</span> index = <span class="built_in">this</span>.eventMap[eventName].findIndex(<span class="function">(<span class="params">item</span>) =&gt;</span> item === fn);</span><br><span class="line">   <span class="keyword">if</span> (index === -<span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line">   <span class="built_in">this</span>.eventMap[eventName].splice(index, <span class="number">1</span>);</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">&quot;取消闹钟成功&quot;</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行取消成功：</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cece88b0c35949d7b82db8fca752b106~tplv-k3u1fbpfcp-watermark.image" alt="image.png"><br><a target="_blank" rel="noopener" href="https://github.com/leehome150/EventHub">源代码点击</a></p>
 
     </div>
 
@@ -294,7 +311,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://leehome150.github.io/posts/b56cb502/" title="Hexo nexT 7.8.0 添加背景图片">https://leehome150.github.io/posts/b56cb502/</a>
+    <a href="https://leehome150.github.io/posts/ee1ff54b/" title="手把手教你写EventHub（发布-订阅）">https://leehome150.github.io/posts/ee1ff54b/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -306,7 +323,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/hexo/" rel="tag"><i class="fa fa-tag"></i> hexo</a>
+              <a href="/tags/eventHub/" rel="tag"><i class="fa fa-tag"></i> eventHub</a>
           </div>
 
         
@@ -315,12 +332,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/1c175475/" rel="prev" title="如何理解Vue的.sync修饰符以及v-model">
-      <i class="fa fa-chevron-left"></i> 如何理解Vue的.sync修饰符以及v-model
+    <a href="/posts/b56cb502/" rel="prev" title="Hexo nexT 7.8.0 添加背景图片">
+      <i class="fa fa-chevron-left"></i> Hexo nexT 7.8.0 添加背景图片
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/ee1ff54b/" rel="next" title="手把手教你写EventHub（发布-订阅）">
-      手把手教你写EventHub（发布-订阅） <i class="fa fa-chevron-right"></i>
+    <a href="/posts/b2ae764/" rel="next" title="Next.js 的三种渲染方式">
+      Next.js 的三种渲染方式 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

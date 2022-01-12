@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>手把手教你写EventHub（发布-订阅）</title>
+    <url>/posts/ee1ff54b/</url>
+    <content><![CDATA[<blockquote>
+<p>手写 EventBus 作为经典的前端手写面试题，在工作之余我觉得还是得记录一下 😊<br><strong>什么是 EventHub</strong></p>
+</blockquote>
+<p>EventHub 是基于<strong>发布订阅模式</strong>实现的一个实例, 翻译为事件中心,常用于多模块(组件)间的通信。</p>
+<p>今天我们就简单的实现 EventHub 的<code>发布、订阅和取消订阅</code>：<br>首先我们确定<code>Api</code>:</p>
+<ul>
+<li>on 订阅（监听）</li>
+<li>emit 发布（触发）</li>
+<li>off 取消订阅</li>
+</ul>
+<p><strong>实现发布和订阅</strong></p>
+<p>我们得用一个变量<strong>eventMap</strong>来暂存事件名字（key）和事件(value)，这里我们用一个数组来记录事件（因为考虑多次订阅）：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventHub</span> </span>&#123;</span><br><span class="line">  private eventMap: &#123; [key: string]: <span class="built_in">Array</span>&lt;<span class="function">(<span class="params">params?</span>) =&gt;</span> <span class="keyword">void</span>&gt; &#125; = &#123;&#125;;</span><br><span class="line">  <span class="function"><span class="title">on</span>(<span class="params">eventName, fn</span>)</span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="title">emit</span>(<span class="params">eventName</span>)</span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="title">off</span>(<span class="params">eventName</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> EventHub;</span><br></pre></td></tr></table></figure>
+
+<p>当我们订阅一个事件的时候，我们把这个事件 push 到订阅的东西的事件队列中，比如我在手机闹钟里面订了个 3 秒后的闹钟:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> EventHub <span class="keyword">from</span> <span class="string">&quot;../src/index&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> eventHub = <span class="keyword">new</span> EventHub();</span><br><span class="line"></span><br><span class="line">eventHub.on(<span class="string">&quot;闹钟&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;闹钟响了&quot;</span>);</span><br><span class="line">  &#125;, <span class="number">3000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">eventHub.emit(<span class="string">&quot;闹钟&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>然后我们在类里面的<code>on</code>函数把事件 push 进去：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventHub</span> </span>&#123;</span><br><span class="line">  private eventMap: &#123; [key: string]: <span class="built_in">Array</span>&lt;<span class="function">(<span class="params">params?：any</span>) =&gt;</span> <span class="keyword">void</span>&gt; &#125; = &#123;&#125;;</span><br><span class="line">  <span class="function"><span class="title">on</span>(<span class="params">eventName: string, fn: (params?: any) =&gt; <span class="keyword">void</span></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.eventMap[eventName] = <span class="built_in">this</span>.eventMap[eventName] || [];</span><br><span class="line">    <span class="built_in">this</span>.eventMap[eventName].push(fn);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">emit</span>(<span class="params">eventName</span>)</span> &#123;&#125;</span><br><span class="line">  <span class="function"><span class="title">off</span>(<span class="params">eventName</span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> EventHub;</span><br></pre></td></tr></table></figure>
+
+<p>我们在<code>emit</code>触发执行逻辑：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EventHub</span> </span>&#123;</span><br><span class="line">  private eventMap: &#123; [key: string]: <span class="built_in">Array</span>&lt;<span class="function">(<span class="params">params?: any</span>) =&gt;</span> <span class="keyword">void</span>&gt; &#125; = &#123;&#125;;</span><br><span class="line">  <span class="function"><span class="title">on</span>(<span class="params">eventName: string, fn: (params?: any) =&gt; <span class="keyword">void</span></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.eventMap[eventName] = <span class="built_in">this</span>.eventMap[eventName] || [];</span><br><span class="line">    <span class="built_in">this</span>.eventMap[eventName].push(fn);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">emit</span>(<span class="params">eventName: string</span>)</span> &#123;</span><br><span class="line">    (<span class="built_in">this</span>.eventMap[eventName] || []).forEach(<span class="function">(<span class="params">fn</span>) =&gt;</span> fn());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">off</span>(<span class="params">eventName: string</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(eventName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> EventHub;</span><br></pre></td></tr></table></figure>
+
+<p>执行触发的代码，看控制台（提示：node 运行 ts 文件请下载 ts-node）</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7adeff31547c4b26b739a077107dd40e~tplv-k3u1fbpfcp-watermark.image" alt="image.png"><br><strong>实现取消订阅：</strong><br>当我们在 emit 之前 off 闹钟的订阅</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> EventHub <span class="keyword">from</span> <span class="string">&quot;../src/index&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> eventHub = <span class="keyword">new</span> EventHub();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fn = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;闹钟响了&quot;</span>);</span><br><span class="line">  &#125;, <span class="number">3000</span>);</span><br><span class="line">&#125;;</span><br><span class="line">eventHub.on(<span class="string">&quot;闹钟&quot;</span>, fn);</span><br><span class="line">eventHub.off(<span class="string">&quot;闹钟&quot;</span>, fn);</span><br><span class="line">eventHub.emit(<span class="string">&quot;闹钟&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>加上取消订阅的逻辑：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">off</span>(<span class="params">eventName: string, fn: (params?: any) =&gt; <span class="keyword">void</span></span>)</span> &#123;</span><br><span class="line">   <span class="keyword">const</span> index = <span class="built_in">this</span>.eventMap[eventName].findIndex(<span class="function">(<span class="params">item</span>) =&gt;</span> item === fn);</span><br><span class="line">   <span class="keyword">if</span> (index === -<span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line">   <span class="built_in">this</span>.eventMap[eventName].splice(index, <span class="number">1</span>);</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">&quot;取消闹钟成功&quot;</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行取消成功：</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cece88b0c35949d7b82db8fca752b106~tplv-k3u1fbpfcp-watermark.image" alt="image.png"><br><a href="https://github.com/leehome150/EventHub">源代码点击</a></p>
+]]></content>
+      <categories>
+        <category>手写系列</category>
+      </categories>
+      <tags>
+        <tag>eventHub</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Next.js 的三种渲染方式</title>
     <url>/posts/b2ae764/</url>
     <content><![CDATA[<blockquote>
@@ -69,6 +112,47 @@
       </categories>
       <tags>
         <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何理解Vue的.sync修饰符以及v-model</title>
+    <url>/posts/1c175475/</url>
+    <content><![CDATA[<h3 id="sync"><a href="#sync" class="headerlink" title=".sync"></a>.sync</h3><p>vue 修饰符 sync 的功能是：当一个子组件改变了一个 props 的值时，这个变化也会同步到父组件中所绑定。</p>
+<p>这个功能是怎么实现的呢？</p>
+<p>Vue 组件不能修改 props 外部数据，但是$emit可以触发事件，并传参，$event 可获取$emit 的参数。</p>
+<p>我们看代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Child.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;child&quot;&gt;</span><br><span class="line">   子组件：&#123;&#123;money&#125;&#125;</span><br><span class="line">//触发update:money事件，并传参</span><br><span class="line">   &lt;button @click=&quot;$emit(&#x27;update:money&#x27;,money-100)&quot;&gt;&lt;span&gt;花钱&lt;/span&gt;&lt;/button&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line"></span><br><span class="line">props:[&quot;money&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#child&#123;</span><br><span class="line">  border :1px solid red;</span><br><span class="line">  padding:2px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后$event 获取传的参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//App.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">   父组件： 我现在有&#123;&#123;total&#125;&#125;</span><br><span class="line">    &lt;hr&gt;</span><br><span class="line">//$event 获取传的参数赋值给total</span><br><span class="line">    &lt;Child :money=&quot;total&quot; v-on:update:money=&quot;total=$event&quot;/&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Child from&quot;./Child.vue&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">total:10000</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123; Child:Child&#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#app&#123;</span><br><span class="line">  border :2px solid blue;</span><br><span class="line">  padding:2px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>因为这种场景很常见，所以尤雨溪发明了.sync 修饰符，上面的代码<strong>:money=”total” v-on:update:money=”total=$event”可以简化为:money.sync=”total”</strong></p>
+<p>下面是运行动画：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/12/17207b0ebb162b47~tplv-t2oaga2asx-watermark.awebp"></p>
+<p><a href="https://codesandbox.io/s/eloquent-wave-bc7bb">代码点击</a></p>
+<h3 id="v-model"><a href="#v-model" class="headerlink" title="v-model"></a>v-model</h3><p>v-model 也是个语法糖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">v-model=&quot;x&quot;等价于 ：value=&quot;x&quot;,@input=&quot;x=$event.target.value&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当 v-model 用于普通 input 上</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &#123;&#123;message&#125;&#125;</span><br><span class="line">    &lt;hr/&gt;</span><br><span class="line">    &lt;input v-model=&quot;message&quot; placeholder=&quot;你好&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      message: &quot;&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>动画演示：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/3/17277f6ca1d24f4d~tplv-t2oaga2asx-watermark.awebp"></p>
+<p>当 v-model 用于组件上</p>
+<p>父组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &#123;&#123;price&#125;&#125;</span><br><span class="line">        &lt;hr/&gt;</span><br><span class="line">        &lt;test v-model=&quot;price&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    import test from &#x27;./components/Test.vue&#x27;;</span><br><span class="line">    export default &#123;</span><br><span class="line">        components:&#123;test&#125;,</span><br><span class="line">        name: &quot;App&quot;,</span><br><span class="line">        data()&#123;</span><br><span class="line">            return&#123;</span><br><span class="line">                price:100</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;子组件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>子组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;label&gt;</span><br><span class="line">      &lt;input ref=&quot;input&quot; :value=&quot;value&quot;</span><br><span class="line">      @input=&quot;$emit(&#x27;input&#x27;, $event.target.value)&quot;//子组件触发事件，把输入的参数传给price</span><br><span class="line">      &gt;</span><br><span class="line">    &lt;/label&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  props: [&quot;value&quot;],//子组件把value传给父组件，父组件绑定value=&quot;price&quot;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由上面代码我们可以看出子组件把 value 传给父组件，因为<strong> v-model=”price”等价于 ：value=”price”,@input=”price=$event.target.value”,</strong>父组件动态绑定了 value，然后 input 事件那输入的 value 参数传给了 price,所以我们就能看到以下效果：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/3/1727846768ecc1e0~tplv-t2oaga2asx-watermark.awebp"></p>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
@@ -170,47 +254,6 @@
       </categories>
       <tags>
         <tag>React</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何理解Vue的.sync修饰符以及v-model</title>
-    <url>/posts/1c175475/</url>
-    <content><![CDATA[<h3 id="sync"><a href="#sync" class="headerlink" title=".sync"></a>.sync</h3><p>vue 修饰符 sync 的功能是：当一个子组件改变了一个 props 的值时，这个变化也会同步到父组件中所绑定。</p>
-<p>这个功能是怎么实现的呢？</p>
-<p>Vue 组件不能修改 props 外部数据，但是$emit可以触发事件，并传参，$event 可获取$emit 的参数。</p>
-<p>我们看代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Child.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;child&quot;&gt;</span><br><span class="line">   子组件：&#123;&#123;money&#125;&#125;</span><br><span class="line">//触发update:money事件，并传参</span><br><span class="line">   &lt;button @click=&quot;$emit(&#x27;update:money&#x27;,money-100)&quot;&gt;&lt;span&gt;花钱&lt;/span&gt;&lt;/button&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line"></span><br><span class="line">props:[&quot;money&quot;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#child&#123;</span><br><span class="line">  border :1px solid red;</span><br><span class="line">  padding:2px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>然后$event 获取传的参数：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//App.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">   父组件： 我现在有&#123;&#123;total&#125;&#125;</span><br><span class="line">    &lt;hr&gt;</span><br><span class="line">//$event 获取传的参数赋值给total</span><br><span class="line">    &lt;Child :money=&quot;total&quot; v-on:update:money=&quot;total=$event&quot;/&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Child from&quot;./Child.vue&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  data()&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">total:10000</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123; Child:Child&#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#app&#123;</span><br><span class="line">  border :2px solid blue;</span><br><span class="line">  padding:2px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>因为这种场景很常见，所以尤雨溪发明了.sync 修饰符，上面的代码<strong>:money=”total” v-on:update:money=”total=$event”可以简化为:money.sync=”total”</strong></p>
-<p>下面是运行动画：</p>
-<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/12/17207b0ebb162b47~tplv-t2oaga2asx-watermark.awebp"></p>
-<p><a href="https://codesandbox.io/s/eloquent-wave-bc7bb">代码点击</a></p>
-<h3 id="v-model"><a href="#v-model" class="headerlink" title="v-model"></a>v-model</h3><p>v-model 也是个语法糖</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">v-model=&quot;x&quot;等价于 ：value=&quot;x&quot;,@input=&quot;x=$event.target.value&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>当 v-model 用于普通 input 上</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &#123;&#123;message&#125;&#125;</span><br><span class="line">    &lt;hr/&gt;</span><br><span class="line">    &lt;input v-model=&quot;message&quot; placeholder=&quot;你好&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      message: &quot;&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>动画演示：</p>
-<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/3/17277f6ca1d24f4d~tplv-t2oaga2asx-watermark.awebp"></p>
-<p>当 v-model 用于组件上</p>
-<p>父组件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &#123;&#123;price&#125;&#125;</span><br><span class="line">        &lt;hr/&gt;</span><br><span class="line">        &lt;test v-model=&quot;price&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    import test from &#x27;./components/Test.vue&#x27;;</span><br><span class="line">    export default &#123;</span><br><span class="line">        components:&#123;test&#125;,</span><br><span class="line">        name: &quot;App&quot;,</span><br><span class="line">        data()&#123;</span><br><span class="line">            return&#123;</span><br><span class="line">                price:100</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;子组件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>子组件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;label&gt;</span><br><span class="line">      &lt;input ref=&quot;input&quot; :value=&quot;value&quot;</span><br><span class="line">      @input=&quot;$emit(&#x27;input&#x27;, $event.target.value)&quot;//子组件触发事件，把输入的参数传给price</span><br><span class="line">      &gt;</span><br><span class="line">    &lt;/label&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;App&quot;,</span><br><span class="line">  props: [&quot;value&quot;],//子组件把value传给父组件，父组件绑定value=&quot;price&quot;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>由上面代码我们可以看出子组件把 value 传给父组件，因为<strong> v-model=”price”等价于 ：value=”price”,@input=”price=$event.target.value”,</strong>父组件动态绑定了 value，然后 input 事件那输入的 value 参数传给了 price,所以我们就能看到以下效果：</p>
-<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/3/1727846768ecc1e0~tplv-t2oaga2asx-watermark.awebp"></p>
-]]></content>
-      <categories>
-        <category>Vue</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
       </tags>
   </entry>
 </search>
